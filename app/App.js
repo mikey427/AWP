@@ -8,15 +8,19 @@ export class App extends Component {
   constructor () {
     super();
     this.state = {
-      html: false,
-      css: false,
-      express: false,
-      sequelize: false,
-      react: false,
-      redux: false
+      name: '',
+      modules: {
+        html: false,
+        css: false,
+        express: false,
+        sequelize: false,
+        react: false,
+        redux: false
+      }
     };
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleCheckboxChange = event => {
@@ -25,22 +29,20 @@ export class App extends Component {
     // console.log(this.state);
   };
 
+  handleInputChange = event => {
+    console.log(event);
+    this.setState({ name: event.target.value });
+  };
+
   handleSubmit = event => {
     event.preventDefault();
-    const allModules = Object.keys(this.state);
+    const allModules = Object.keys(this.state.modules);
+    // console.log(allModules, 'allmodules');
     const modules = allModules.filter(module => this.state[module]);
-    console.log(modules);
-    axios.post('/', modules);
-    //   modules.forEach(module => {
-    //     if (this.state[module]) {
-    //       fs.copyFile(`../storage/${module}`, '../temp/', function () {
-    //         console.log(`Moved ${module} folder to temp folder!`);
-    //       });
-    //     }
-    //   });
-    //   fs.copyFile('../storage/other', '../temp/', function () {
-    //     console.log('Transfer complete, ready for download');
-    //   });
+    // console.log(modules, 'modules');
+    const name = this.state.name;
+    // console.log(modules, 'modules front');
+    axios.post('/', { modules, name });
   };
   render () {
     return (
@@ -52,7 +54,7 @@ export class App extends Component {
               Enter the name of your project and select the modules you would
               like to use!
             </label>
-            <input name='project name' type='text' />
+            <input name='name' type='text' onChange={this.handleInputChange} />
           </div>
           <ul id='list'>
             <li>
@@ -104,7 +106,9 @@ export class App extends Component {
               <label> Redux</label>
             </li>
             <button type='submit'>Submit</button>
-            <button type='button'>Download</button>
+            <button type='button' method='get' action='./temp'>
+              Download
+            </button>
           </ul>
         </form>
       </div>
