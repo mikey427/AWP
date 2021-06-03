@@ -1,6 +1,7 @@
 import fs from 'fs';
 import fse from 'fs-extra';
 
+// Lists all folders/files in a directory
 export const listDir = path => {
   fs.readdir(path, (err, folders) => {
     if (err) throw err;
@@ -8,6 +9,7 @@ export const listDir = path => {
   });
 };
 
+// Will copy a specific folder to new location
 export const copyFolder = (oldPath, newPath) => {
   fse.copy(oldPath, newPath, err => {
     if (err) {
@@ -20,6 +22,7 @@ export const copyFolder = (oldPath, newPath) => {
   });
 };
 
+// Will remove all files/folders in a directory
 export const removeAllFilesFromDir = path => {
   fs.readdir(path, (err, folders) => {
     if (err) throw err;
@@ -32,11 +35,23 @@ export const removeAllFilesFromDir = path => {
   });
 };
 
-export const cleanUp = () => {
-  removeAllFilesFromDir('./');
-  removeAllFilesFromDir('./temp');
+// Will remove all files of a specific type from a directory
+export const removeFiles = (path, ext) => {
+  const files = listDir(path);
+  files.forEach(file => {
+    if (ext in file) {
+      fs.unlink(`${path}/${file}`);
+    }
+  });
 };
 
+// Cleans up unnecessary files
+export const cleanUp = () => {
+  removeAllFilesFromDir('./temp');
+  removeFiles('./', '.zip');
+};
+
+// Zips folder to be downloaded
 export const zipFolder = zipName => {
   let zip = new AdmZip();
   zip.addLocalFile('./temp');
