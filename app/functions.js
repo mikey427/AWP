@@ -60,7 +60,9 @@ const removeFiles = (path, ext) => {
   if (files) {
     files.forEach(file => {
       if (file.includes(ext)) {
-        fs.unlink(`${path}/${file}`);
+        fs.unlink(`${path}/${file}`, () => {
+          return console.log(`${file} deleted`);
+        });
       }
     });
   }
@@ -77,17 +79,24 @@ const cleanUp = () => {
 const zipTempFolder = zipName => {
   let temp = listDir('./temp');
   console.log(typeof temp, 'isarray');
-  while (temp == undefined) {
-    console.log(temp, 'temp in loop');
-    console.log('loop');
-    temp = listDir('./temp');
-    if (temp != undefined) {
-      let zip = new AdmZip();
-      zip.addLocalFolder('./temp/');
-      zip.writeZip(`./${zipName}.zip`);
-      console.log('zip created');
-    }
-  }
+  console.log(temp);
+  let zip = new AdmZip();
+  zip.addLocalFolder('./temp');
+  console.log(zip.getEntries(), 'entries');
+  zip.writeZip(`./${zipName}.zip`);
+  console.log('zip created');
+
+  // while (temp.length == 0) {
+  //   console.log(temp, 'temp in loop');
+  //   console.log('loop');
+  //   temp = listDir('./temp');
+  //   if (temp.length > 0) {
+  //     let zip = new AdmZip();
+  //     zip.addLocalFolder('./temp/');
+  //     zip.writeZip(`./${zipName}.zip`);
+  //     console.log('zip created');
+  //   }
+  // }
 };
 
 module.exports = {
