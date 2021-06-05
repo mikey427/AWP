@@ -6,7 +6,17 @@ const fs = require('fs');
 const fse = require('fs-extra');
 const zipper = require('zip-local');
 const app = express();
+const fn = require('../app/functions');
+const { promisify } = require('util');
+// import express from 'express';
+// import path from 'path';
+// import morgan from 'morgan';
+// import bodyParser from 'body-parser';
+// import fs from 'fs';
+// import fse from 'fs-extra';
+// const app = express();
 
+// const { functions } = require('../app/functions');
 // Logging middleware
 app.use(morgan('dev'));
 
@@ -71,19 +81,46 @@ app.use(express.static(path.join(__dirname, '../public')));
 //   res.send('Files ready for download');
 // });
 
-app.post('/', (req, res) => {});
+app.post('/', async (req, res) => {
+  // console.log(req.body);
+  // console.log(req.body.modules);
+  // console.log(req.body.name);
+  fn.cleanUp();
+  await req.body.modules.forEach(module => {
+    fn.copyFolder(`./storage/${module}`, `./temp/${module}`);
+  });
+  fn.copyFolder('./storage/other', './temp/other');
+  // let temp = fn.listDir('./temp');
+  // while (temp && temp.length == 0) {
+  //   console.log(temp);
+  //   console.log('loop');
+  //   temp = fn.listDir('./temp');
+  // }
+  // console.log('loop done');
+  fn.zipTempFolder(req.body.name);
+  res.send();
+  // const myPromise = req.body.modules.forEach(module => {
+  //   fn.copyFolder(`./storage/${module}`, `./temp/${module}`);
+  // });
+  // fn.cleanUp();
+  // myPromise
+  //   .then(fn.copyFolder('./storage/other', './temp/other'))
+  //   .then(fn.zipFolder(req.body.name))
+  //   .finally(res.send());
+});
 
 app.get('*', (req, res) => {
   console.log('from express');
-  fs.readdir('./temp', (err, folders) => {
-    if (err) throw err;
+  // fn.cleanUp();
+  // fs.readdir('./temp', (err, folders) => {
+  //   if (err) throw err;
 
-    for (const folder of folders) {
-      fs.rmdir(path.join('./temp', folder), { recursive: true }, err => {
-        if (err) throw err;
-      });
-    }
-  });
+  //   for (const folder of folders) {
+  //     fs.rmdir(path.join('./temp', folder), { recursive: true }, err => {
+  //       if (err) throw err;
+  //     });
+  //   }
+  // });
   res.sendFile(path.join(__dirname, '../public/bundle.js'));
 }); // Send index.html for any other requests
 

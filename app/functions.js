@@ -1,34 +1,51 @@
-import fs from 'fs';
-import fse from 'fs-extra';
+const fs = require('fs');
+const fse = require('fs-extra');
+const AdmZip = require('adm-zip');
 
 // Lists all folders/files in a directory
-export const listDir = path => {
-  fs.readdir(path, (err, folders) => {
-    if (err) throw err;
-    console.log(folders);
-  });
+const listDir = path => {
+  // fs.readdir(path, (err, files) => {
+  //   console.log(files, path, 'files, path');
+  //   if (err) {
+  //     throw err;
+  //   } else {
+  //     if (files.length == 0) {
+  //       return [];
+  //     } else {
+  //       console.log(path);
+  //       console.log(files, 'files');
+  //       return files;
+  //     }
+  //   }
+  // });
+  return fs.readdirSync(path);
+  console.log(3);
 };
 
 // Will copy a specific folder to new location
-export const copyFolder = (oldPath, newPath) => {
+const copyFolder = (oldPath, newPath) => {
   fse.copy(oldPath, newPath, err => {
     if (err) {
       console.log(err, 'Error when copying');
     } else {
       let path = oldPath.split('/');
-      const folderName = path[-1];
+      // console.log(path, 'path');
+      const folderName = path[path.length - 1];
       console.log(`Copied ${folderName} folder to ${newPath}`);
     }
   });
+  // console.log(2);
 };
 
 // Will remove all files/folders in a directory
-export const removeAllFilesFromDir = path => {
+const removeAllFilesFromDir = path => {
   fs.readdir(path, (err, folders) => {
     if (err) throw err;
 
     for (const folder of folders) {
-      fs.rmdir(path.join(path, folder), { recursive: true }, err => {
+      // console.log(path, 'path');
+      // console.log(folder, 'folder');
+      fs.rmdir(path.concat('/', folder), { recursive: true }, err => {
         if (err) throw err;
       });
     }
@@ -36,24 +53,48 @@ export const removeAllFilesFromDir = path => {
 };
 
 // Will remove all files of a specific type from a directory
-export const removeFiles = (path, ext) => {
+const removeFiles = (path, ext) => {
   const files = listDir(path);
-  files.forEach(file => {
-    if (ext in file) {
-      fs.unlink(`${path}/${file}`);
-    }
-  });
+  // console.log(files, 'files');
+  // console.log(typeof files, 'typeof files');
+  if (files) {
+    files.forEach(file => {
+      if (file.includes(ext)) {
+        fs.unlink(`${path}/${file}`);
+      }
+    });
+  }
 };
 
 // Cleans up unnecessary files
-export const cleanUp = () => {
+const cleanUp = () => {
   removeAllFilesFromDir('./temp');
   removeFiles('./', '.zip');
+  console.log(1);
 };
 
 // Zips folder to be downloaded
-export const zipFolder = zipName => {
-  let zip = new AdmZip();
-  zip.addLocalFile('./temp');
-  zip.writeZip(`./${zipName}.zip`);
+const zipTempFolder = zipName => {
+  let temp = listDir('./temp');
+  console.log(typeof temp, 'isarray');
+  while (temp == undefined) {
+    console.log(temp, 'temp in loop');
+    console.log('loop');
+    temp = listDir('./temp');
+    if (temp != undefined) {
+      let zip = new AdmZip();
+      zip.addLocalFolder('./temp/');
+      zip.writeZip(`./${zipName}.zip`);
+      console.log('zip created');
+    }
+  }
+};
+
+module.exports = {
+  listDir,
+  copyFolder,
+  removeAllFilesFromDir,
+  removeFiles,
+  cleanUp,
+  zipTempFolder
 };
