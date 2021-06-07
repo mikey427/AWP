@@ -23,18 +23,24 @@ const listDir = path => {
 };
 
 // Will copy a specific folder to new location
-const copyFolder = (oldPath, newPath) => {
-  fse.copy(oldPath, newPath, err => {
-    if (err) {
-      console.log(err, 'Error when copying');
-    } else {
-      let path = oldPath.split('/');
-      // console.log(path, 'path');
-      const folderName = path[path.length - 1];
-      console.log(`Copied ${folderName} folder to ${newPath}`);
-    }
-  });
-  // console.log(2);
+const copyFolder = async => (oldPath, newPath) => {
+  // fse.copy(oldPath, newPath, err => {
+  //   if (err) {
+  //     console.log(err, 'Error when copying');
+  //   } else {
+  //     let path = oldPath.split('/');
+  //     // console.log(path, 'path');
+  //     const folderName = path[path.length - 1];
+  //     console.log(`Copied ${folderName} folder to ${newPath}`);
+  //   }
+  // });
+  // // console.log(2);
+};
+
+const copyFolderArr = paths => {
+  for (i = 0; i < paths.length; i++) {
+    fse.copy(``);
+  }
 };
 
 // Will remove all files/folders in a directory
@@ -83,7 +89,7 @@ const zipTempFolder = zipName => {
   let zip = new AdmZip();
   zip.addLocalFolder('./temp');
   console.log(zip.getEntries(), 'entries');
-  zip.writeZip(`./${zipName}.zip`);
+  zip.writeZip(`./test.zip`);
   console.log('zip created');
 
   // while (temp.length == 0) {

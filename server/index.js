@@ -4,7 +4,6 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const fse = require('fs-extra');
-const zipper = require('zip-local');
 const app = express();
 const fn = require('../app/functions');
 const { promisify } = require('util');
@@ -81,15 +80,37 @@ app.use(express.static(path.join(__dirname, '../public')));
 //   res.send('Files ready for download');
 // });
 
-app.post('/', async (req, res) => {
+app.post('/', (req, res) => {
   // console.log(req.body);
-  // console.log(req.body.modules);
+  console.log(req.body.modules);
+  console.log(req.body.name, 'name');
   // console.log(req.body.name);
-  fn.cleanUp();
-  await req.body.modules.forEach(module => {
-    fn.copyFolder(`./storage/${module}`, `./temp/${module}`);
-  });
-  fn.copyFolder('./storage/other', './temp/other');
+  // fn.cleanUp();
+  // req.body.modules.forEach(async module => {
+  //   await fn.copyFolder(`./storage/${module}`, `./temp/${module}`);
+  // });
+  // req.body.modules.forEach(module => {
+  //   try {
+  //     fse.copySync(`./storage/${module}`, `./temp/${module}`, err => {
+  //       if (err) {
+  //         console.log(err, 'Error when copying');
+  //       }
+  //     });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // });
+  const filterFunc = (src, dest) => {
+    // your logic here
+    // it will be copied if return true
+  };
+
+  fs.copySync('/tmp/mydir', '/tmp/mynewdir', { filter: filterFunc });
+  // fse.move('./storage', './temp/', { overwrite: false }, err => {
+  //   if (err) return console.error(err);
+  //   console.log('success!');
+  // });
+  // fn.copyFolder('./storage/other', './temp/other');
   // let temp = fn.listDir('./temp');
   // while (temp && temp.length == 0) {
   //   console.log(temp);
@@ -111,7 +132,7 @@ app.post('/', async (req, res) => {
 
 app.get('*', (req, res) => {
   console.log('from express');
-  // fn.cleanUp();
+  fn.cleanUp();
   // fs.readdir('./temp', (err, folders) => {
   //   if (err) throw err;
 
