@@ -83,11 +83,11 @@ const cleanUp = () => {
 
 // Zips folder to be downloaded
 const zipTempFolder = zipName => {
-  let temp = listDir('./temp');
-  console.log(typeof temp, 'isarray');
-  console.log(temp);
+  // let temp = listDir('./temp');
+  // console.log(typeof temp, 'isarray');
+  // console.log(temp);
   let zip = new AdmZip();
-  zip.addLocalFolder('./temp');
+  zip.addLocalFolder('./temp', './test.zip');
   console.log(zip.getEntries(), 'entries');
   zip.writeZip(`./test.zip`);
   console.log('zip created');

@@ -89,23 +89,20 @@ app.post('/', (req, res) => {
   // req.body.modules.forEach(async module => {
   //   await fn.copyFolder(`./storage/${module}`, `./temp/${module}`);
   // });
-  // req.body.modules.forEach(module => {
-  //   try {
-  //     fse.copySync(`./storage/${module}`, `./temp/${module}`, err => {
-  //       if (err) {
-  //         console.log(err, 'Error when copying');
-  //       }
-  //     });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // });
-  const filterFunc = (src, dest) => {
-    // your logic here
-    // it will be copied if return true
-  };
+  req.body.modules.forEach(module => {
+    try {
+      fse.copySync(`./storage/${module}`, `./temp/${module}`);
+    } catch (error) {
+      throw error;
+    }
+  });
+  fse.copySync('./storage/other', './temp/other');
+  // const filterFunc = (src, dest) => {
+  //   // your logic here
+  //   // it will be copied if return true
+  // };
 
-  fs.copySync('/tmp/mydir', '/tmp/mynewdir', { filter: filterFunc });
+  // fs.copySync('/tmp/mydir', '/tmp/mynewdir', { filter: filterFunc });
   // fse.move('./storage', './temp/', { overwrite: false }, err => {
   //   if (err) return console.error(err);
   //   console.log('success!');
