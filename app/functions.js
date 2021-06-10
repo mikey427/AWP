@@ -87,9 +87,9 @@ const zipTempFolder = zipName => {
   // console.log(typeof temp, 'isarray');
   // console.log(temp);
   let zip = new AdmZip();
-  zip.addLocalFolder('./temp', './test.zip');
+  zip.addLocalFolder('./temp', `./${zipName}.zip`);
   console.log(zip.getEntries(), 'entries');
-  zip.writeZip(`./test.zip`);
+  zip.writeZip(`./${zipName}.zip`);
   console.log('zip created');
 
   // while (temp.length == 0) {

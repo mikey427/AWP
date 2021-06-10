@@ -82,7 +82,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.post('/', (req, res) => {
   // console.log(req.body);
-  console.log(req.body.modules);
+  console.log(req.body, 'body');
   console.log(req.body.name, 'name');
   // console.log(req.body.name);
   // fn.cleanUp();

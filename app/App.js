@@ -25,7 +25,12 @@ export class App extends Component {
 
   handleCheckboxChange = event => {
     // console.log(this.state);
-    this.setState({ [event.target.name]: !this.state[event.target.name] });
+    this.setState({
+      modules: {
+        ...this.state.modules,
+        [event.target.name]: !this.state[event.target.name]
+      }
+    });
     // console.log(this.state);
   };
 
@@ -38,7 +43,7 @@ export class App extends Component {
     event.preventDefault();
     const allModules = Object.keys(this.state.modules);
     // console.log(allModules, 'allmodules');
-    const modules = allModules.filter(module => this.state[module]);
+    const modules = allModules.filter(module => this.state.modules[module]);
     // console.log(modules, 'modules');
     const name = this.state.name;
     // console.log(modules, 'modules front');
