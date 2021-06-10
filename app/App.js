@@ -21,6 +21,7 @@ export class App extends Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
   }
 
   handleCheckboxChange = event => {
@@ -49,6 +50,12 @@ export class App extends Component {
     // console.log(modules, 'modules front');
     axios.post('/', { modules, name });
   };
+
+  handleDownload = event => {
+    // axios.get('./download');
+    window.open(`/download?${this.state.name}.zip`);
+  };
+  '';
   render () {
     return (
       <div>
@@ -111,7 +118,7 @@ export class App extends Component {
               <label> Redux</label>
             </li>
             <button type='submit'>Submit</button>
-            <button type='button' method='get' action='./temp'>
+            <button type='button' onClick={this.handleDownload}>
               Download
             </button>
           </ul>

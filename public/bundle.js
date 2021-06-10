@@ -1924,6 +1924,13 @@ var App = /*#__PURE__*/function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_this), "handleDownload", function (event) {
+      // axios.get('./download');
+      window.open("/download?".concat(_this.state.name, ".zip"));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), '', void 0);
+
     _this.state = {
       name: '',
       modules: {
@@ -1938,6 +1945,7 @@ var App = /*#__PURE__*/function (_Component) {
     _this.handleCheckboxChange = _this.handleCheckboxChange.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.handleInputChange = _this.handleInputChange.bind(_assertThisInitialized(_this));
+    _this.handleDownload = _this.handleDownload.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -1980,8 +1988,7 @@ var App = /*#__PURE__*/function (_Component) {
         type: "submit"
       }, "Submit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
         type: "button",
-        method: "get",
-        action: "./temp"
+        onClick: this.handleDownload
       }, "Download"))));
     }
   }]);

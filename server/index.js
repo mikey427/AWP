@@ -79,11 +79,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 //   // });
 //   res.send('Files ready for download');
 // });
-
+let name;
 app.post('/', (req, res) => {
   // console.log(req.body);
   console.log(req.body, 'body');
   console.log(req.body.name, 'name');
+  name = req.body.name;
   // console.log(req.body.name);
   // fn.cleanUp();
   // req.body.modules.forEach(async module => {
@@ -125,6 +126,13 @@ app.post('/', (req, res) => {
   //   .then(fn.copyFolder('./storage/other', './temp/other'))
   //   .then(fn.zipFolder(req.body.name))
   //   .finally(res.send());
+});
+
+app.get('/download', function (req, res) {
+  let reqPath = path.join(__dirname, '../'); //It goes three folders or directories back from given __dirname.
+  const file = `${reqPath}${name}.zip`;
+  console.log(file);
+  res.download(file, `${name}.zip`); // Set disposition and send it.
 });
 
 app.get('*', (req, res) => {
