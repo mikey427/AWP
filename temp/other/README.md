@@ -1,2 +1,0 @@
--Tons of sample code, not meant to produce a working app right off the bat.
--In order to create a functioning app from this, connect the express routes to frontend
