@@ -1,6 +1,3 @@
-// import logo from './logo.svg';
-// import * as fs from 'fs';
-
 import React, { Component } from 'react';
 import axios from 'axios';
 
@@ -25,14 +22,12 @@ export class App extends Component {
   }
 
   handleCheckboxChange = event => {
-    // console.log(this.state);
     this.setState({
       modules: {
         ...this.state.modules,
         [event.target.name]: !this.state[event.target.name]
       }
     });
-    // console.log(this.state);
   };
 
   handleInputChange = event => {
@@ -43,16 +38,12 @@ export class App extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const allModules = Object.keys(this.state.modules);
-    // console.log(allModules, 'allmodules');
     const modules = allModules.filter(module => this.state.modules[module]);
-    // console.log(modules, 'modules');
     const name = this.state.name;
-    // console.log(modules, 'modules front');
     axios.post('/', { modules, name });
   };
 
   handleDownload = event => {
-    // axios.get('./download');
     window.open(`/download?${this.state.name}.zip`);
   };
   '';

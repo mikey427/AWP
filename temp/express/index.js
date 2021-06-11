@@ -2,9 +2,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const fse = require('fs-extra');
 const app = express();
-const fn = require('../app/functions');
 
 // Logging middleware
 app.use(morgan('dev'));
@@ -20,33 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // static middleware
 app.use(express.static(path.join(__dirname, '../public')));
 
-let name;
-app.post('/', (req, res) => {
-  console.log(req.body, 'body');
-  console.log(req.body.name, 'name');
-  name = req.body.name;
-  req.body.modules.forEach(module => {
-    try {
-      fn.copyFolder(`./storage/${module}`, `./temp/${module}`);
-    } catch (error) {
-      throw error;
-    }
-  });
-  fse.copySync('./storage/other', './temp/other');
-  fn.zipTempFolder(req.body.name);
-  res.send();
-});
-
-app.get('/download', function (req, res) {
-  let reqPath = path.join(__dirname, '../');
-  const file = `${reqPath}${name}.zip`;
-  console.log(file);
-  res.download(file, `${name}.zip`);
-});
+app.use('/api', require('./API')); // include our routes!
 
 app.get('*', (req, res) => {
-  console.log('from express');
-  fn.cleanUp();
   res.sendFile(path.join(__dirname, '../public/bundle.js'));
 }); // Send index.html for any other requests
 

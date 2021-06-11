@@ -1876,8 +1876,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// import logo from './logo.svg';
-// import * as fs from 'fs';
 
 
 var App = /*#__PURE__*/function (_Component) {
@@ -1893,11 +1891,9 @@ var App = /*#__PURE__*/function (_Component) {
     _this = _super.call(this);
 
     _defineProperty(_assertThisInitialized(_this), "handleCheckboxChange", function (event) {
-      // console.log(this.state);
       _this.setState({
         modules: _objectSpread(_objectSpread({}, _this.state.modules), {}, _defineProperty({}, event.target.name, !_this.state[event.target.name]))
-      }); // console.log(this.state);
-
+      });
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleInputChange", function (event) {
@@ -1910,14 +1906,11 @@ var App = /*#__PURE__*/function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (event) {
       event.preventDefault();
-      var allModules = Object.keys(_this.state.modules); // console.log(allModules, 'allmodules');
-
+      var allModules = Object.keys(_this.state.modules);
       var modules = allModules.filter(function (module) {
         return _this.state.modules[module];
-      }); // console.log(modules, 'modules');
-
-      var name = _this.state.name; // console.log(modules, 'modules front');
-
+      });
+      var name = _this.state.name;
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/', {
         modules: modules,
         name: name
@@ -1925,7 +1918,6 @@ var App = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleDownload", function (event) {
-      // axios.get('./download');
       window.open("/download?".concat(_this.state.name, ".zip"));
     });
 
